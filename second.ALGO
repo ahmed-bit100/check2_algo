@@ -1,0 +1,76 @@
+//Solution to the first and second probelms using arrays.
+//Given two sets of elemnts, the algorithm below will calculate the sum of distinct elements and sum of duplicate elements at the same time
+ALGORITHM Solution_array
+VAR
+    tab1 : ARRAY_OF INTEGER[50];
+    tab2 : ARRAY_OF INTEGER[50];
+    sum_dis:=0;// sum of distinct elemnts
+    sum_dup:=0;//sum of duplicate elements
+    i : INTEGER;
+    j : INTEGER;
+BEGIN
+    read(tab1);
+    read(tab2);
+    IF (tab1==tab2) THEN
+        sum_dis:=0;
+        sum_dup:=sum_dup + tab1[i]*2;
+        // in case the sets of elements are identical, the sum of distinct elements will be 0 
+        write(sum_dis);
+        write(sum_dup);
+    ELSE
+    FOR i FROM 0 TO tab1.length-1 STEP 1 DO
+    FOR j FROM 0 TO tab2.length-1 STEP 1 DO
+    IF (tab1[i]==tab2[j]) THEN
+        sum_dup:=tab1[i]+tab2[j];
+        ELSE
+        sum_dis:=sum_dis + tab1[i];
+    END_IF
+    IF (tab2[j]!==tab1[i]) THEN
+        sum_dis:= sum_dis+tab2[j]
+    END_IF
+    write(sum_dis);
+    write(sum_dup);
+END
+
+//Solution for the 1st and second problems at the same time using hash tables
+ALGORITHM Solution_Hashtable
+VAR
+    set1: ARRAY_OF INTEGER[50];
+    set2: ARRAY_OF INTEGER[50];
+    sum_dis:=0;// sum of distinct elemnts
+    sum_dup:=0;//sum of duplicate elements
+    i: INTEGER;
+    j: INTEGER;
+    count: INTEGER;
+    H: HASH_TABLE<INTEGER,INTEGER>;
+BEGIN
+    FOR i FROM 0 TO set1.length-1 STEP 1 DO
+        IF (H.lookup(set1[i])==true) THEN
+            count := H.get(set1[i])+1;
+            H.insert(Set1[i],count);
+            ELSE
+            count:=1;
+            H.insert(set1[i],count);
+        END_IF
+    END_FOR
+    FOR j FROM 0 TO set2.length-1 STEP 1 DO
+        IF (H.lookup(set2[j])==true) THEN
+            count := H.get(set2[j])+1;
+            H.insert(Set2[j],count);
+            ELSE
+            count:=1;
+            H.insert(set2[j],count);
+        END_IF
+    END_FOR
+    tab = H.getKeys()
+    FOR i FROM 0 TO tab.length-1 STEP 1  DO
+        IF (H.get(tab[i])==1) THEN
+            sum_dis:= sum_dis+ tab[i]
+        END_IF
+        IF (H.get(tab[i])>1) THEN
+           sum_dup:= sum_dup+(H.get(tab[i]) * tab[i])
+    END_FOR
+    write(sum_dis);
+    write(sum_dup);
+END
+
